@@ -1,0 +1,23 @@
+# 忽略pycharm产生的.idea文件
+manim_demo/.idea/
+manim_demo/srcs/__pycache__/
+manim_demo/manimlib/animation/__pycache__/
+manim_demo/manimlib/camera/__pycache__/
+manim_demo/manimlib/container/__pycache__/
+manim_demo/manimlib/for_3b1b_videos/__pycache__/
+manim_demo/manimlib/mobject/__pycache__/
+manim_demo/manimlib/mobject/svg/__pycache__/
+manim_demo/manimlib/mobject/types/__pycache__/
+manim_demo/manimlib/once_useful_constructs/__pycache__/
+manim_demo/manimlib/scene/__pycache__/
+manim_demo/manimlib/utils/__pycache__/
+
+
+# 忽略代码运行的结果
+manim_demo/results/
+
+# jupyter_tutorial文件的产生中间文件
+jupyter_tutorial/.ipynb_checkpoints/
+
+
+
