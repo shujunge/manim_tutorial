@@ -1,6 +1,13 @@
-命令
+manim 教程
 =======
 
+## 环境配置
 ```
-manim zf.py OpeningManimExample -pl --tex_dir results --video_dir results
+pip install -r requirements.txt
+```
+
+## 代码运行
+
+```
+python run.py
 ```
