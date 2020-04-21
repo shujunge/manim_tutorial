@@ -54,4 +54,3 @@ class PhysicExample(PhysicScene):
 
 if __name__ == '__main__':
     run(your_module = [Text_demo], l=True, gif =False)
-    # print(basic_3d_shape.__base__)
