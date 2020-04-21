@@ -241,15 +241,18 @@ class CompareGraph(ShowComplexityOrder):
                 num += 1
                 self.show_graph(li[1], li[2], li[3], li[0])
                 self.wait(1)
-                # self.show_bg_graph(li[1], li[0])
+                self.show_bg_graph(li[1], li[0])
                 self.set_Dots(self.graph, li[1])
+
                 if not screen:
                     screen = True
                     screen_rect = ScreenRectangle(height=2).next_to(self.title, 3*DOWN).shift(DOWN+RIGHT)
                     self.play(ShowCreation(screen_rect))
                 self.addDescription(10, li[4])
+
+                print("li:", li)
                 # self.play(FadeOut(VGroup(graph, graph_label), RIGHT))
-                # break
+                break
             self.play(FadeOut(VGroup(self.title, self.axes), DOWN))
             close_1 = TextMobject("\\texttt{{Made By ZeFeng Zhu}}", color=BLUE_D).scale(1.2)
             close_2 = TextMobject("\\texttt{{Last modified time: 2019-07-27T21:40:34+08:00}}").scale(0.8).next_to(close_1, DOWN)
@@ -316,12 +319,12 @@ class CompareGraph(ShowComplexityOrder):
             def h_update(h_line, proportion = 1):
                 end = bg_graph.point_from_proportion(proportion)
                 t_axis_point = end[0]*RIGHT + origin[1]*UP
-                h_line.put_start_and_end_on(t_axis_point, end)
+                # h_line.put_start_and_end_on(t_axis_point, end)
 
             def v_update(v_line, proportion = 1):
                 end = bg_graph.point_from_proportion(proportion)
                 d_axis_point = origin[0]*RIGHT + end[1]*UP
-                v_line.put_start_and_end_on(d_axis_point, end)
+                # v_line.put_start_and_end_on(d_axis_point, end)
 
             self.play(ShowCreation(bg_graph, run_time=3),
                       UpdateFromFunc(h_line, h_update),

@@ -6,7 +6,7 @@ import argparse
 from manimlib.extract_scene import *
 
 
-def my_argparse():
+def my_argparse( l=True, m=False, h=False, gif = False):
     try:
         parser = argparse.ArgumentParser()
         module_location = parser.add_mutually_exclusive_group()
@@ -40,17 +40,19 @@ def my_argparse():
         ),
         parser.add_argument(
             "-l", "--low_quality",
-            default= True,
+            default= l,
             action="store_true",
             help="Render at a low quality (for faster rendering)",
         ),
         parser.add_argument(
             "-m", "--medium_quality",
+            default=m,
             action="store_true",
             help="Render at a medium quality",
         ),
         parser.add_argument(
             "--high_quality",
+            default=h,
             action="store_true",
             help="Render at a high quality",
         ),
@@ -61,6 +63,7 @@ def my_argparse():
         ),
         parser.add_argument(
             "-i", "--save_as_gif",
+            default= gif,
             action="store_true",
             help="Save the video as gif",
         ),
@@ -121,7 +124,7 @@ def my_argparse():
         video_group = parser.add_mutually_exclusive_group()
         video_group.add_argument(
             "--video_dir",
-            default="./results",
+            default="./results/video/",
             help="directory to write file tree for video",
         )
         video_group.add_argument(
@@ -198,12 +201,12 @@ def manim_main(config):
                 play_error_sound()
 
 
-def run( your_module):
+def run( your_module, l=True, m=False, h=False, gif = False):
     """
-    :param your_module: your name class
+    :param your_module: [your name class]
     :return:
     """
-    args = my_argparse()
+    args = my_argparse(l, m, h, gif)
     config = manimlib.config.get_configuration(args)
     config['module'] = your_module
     manimlib.constants.initialize_directories(config)

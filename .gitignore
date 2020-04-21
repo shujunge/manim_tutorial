@@ -15,9 +15,11 @@ manim_demo/manimlib/__pycache__/
 
 # 忽略代码运行的结果
 manim_demo/results/
+manim_demo/__pycache__/
 
 # jupyter_tutorial文件的产生中间文件
 jupyter_tutorial/.ipynb_checkpoints/
+jupyter_tutorial/results/
 
 
 

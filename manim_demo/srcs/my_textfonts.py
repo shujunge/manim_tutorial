@@ -25,13 +25,13 @@ class my_fonts_Demo(Scene):
         self.wait()
         self.clear()
 
-class Intro(my_fonts_Demo):
+class Intro(Scene):
 
     def construct(self):
         super(Intro, self).construct()
-        text_1 = Text('如何证明更一般的情况呢？', font='STKaiti', color=BLUE).scale(0.9).shift(UP * 1.8)
+        text_1 = Text('如何证明更一般的情况呢？ hello', font='DFLianLian SC2 W2', color=BLUE).scale(0.9).shift(UP * 1.8)
         # text_1 = TextMobject(r"\normalfont 如何 \bfseries 证明  \scshape 更一般的情况呢 23456").scale(0.9).shift(UP * 1.8)
-        text_2 = Text('让我们来回顾一个经典的问题', font='STKaiti', color=YELLOW).scale(0.7).shift(UP * 0.25)
+        text_2 = Text('让我们来回顾一个经典的问题', font='丁永康硬笔楷书新版', color=YELLOW).scale(0.7).shift(UP * 0.25)
 
         achilles_svg = SVGMobject('./srcs/figs/Achilles.svg', color=BLUE, stroke_width=0.2).scale(1.25).to_corner(DOWN * 1.8 + LEFT * 6)
         tortoise_svg = SVGMobject('./srcs/figs/tortoise.svg', color=YELLOW).scale(0.64).to_corner(DOWN * 1.8 + RIGHT * 6)
@@ -46,6 +46,69 @@ class Intro(my_fonts_Demo):
         self.play(TurnInsideOut(achilles_svg), WiggleOutThenIn(tortoise_svg))
 
         self.wait(2)
+
+class Text_demo(Scene):
+    def construct(self):
+        text = Text('Hello world', font='DFLianLian SC2 W2' )
+        self.play(Write(text))
+        self.wait()
+        text = Text('color: Hello world', font='DFLianLian SC2 W2', t2c={'world': BLUE})
+        text.shift(UP)
+        self.play(FadeInFromDown(text), run_times=2)
+        self.wait()
+
+        now = Text('gradient: Hello world', font='DFLianLian SC2 W2', gradient = (BLUE, GREEN))
+        now.shift(1.1* DOWN)
+        tmp = text.copy()
+        self.play(Transform(tmp, now), run_times=2)
+        self.wait()
+        self.play(Uncreate(now),Uncreate(tmp))
+
+
+        # t2g (text2gradient)
+        now = Text('text2gradient: Hello world', font='DFLianLian SC2 W2', t2g = {'world': (BLUE, GREEN)})
+        now.shift(1.1* DOWN)
+        tmp = text.copy()
+        self.play(Transform(tmp, now), run_times=2)
+        self.wait()
+        self.play(Uncreate(now),Uncreate(tmp))
+
+
+        # t2f(text2font)
+        now = Text('text2font: Hello world', font='DFLianLian SC2 W2', t2f={'world':'丁永康硬笔楷书新版'})
+        now.shift(1.1* DOWN)
+        tmp = text.copy()
+        self.play(Transform(tmp, now), run_times=2)
+        self.wait()
+        self.play(Uncreate(now),Uncreate(tmp))
+
+
+        #t2s (text2slant)
+        now = Text('text2slant: Hello world', font='DFLianLian SC2 W2', t2s={'world':ITALIC})
+        now.shift(1.1* DOWN)
+        tmp = text.copy()
+        self.play(Transform(tmp, now), run_times=2)
+        self.wait()
+        self.play(Uncreate(now), Uncreate(tmp))
+
+        #t2w(text2weight)
+        now = Text('text2weight: Hello world', font='DFLianLian SC2 W2', t2w={'world':BOLD})
+        now.shift(1.1* DOWN)
+        tmp = text.copy()
+        self.play(Transform(tmp, now), run_times=2)
+        self.wait()
+        self.play(Uncreate(now),Uncreate(tmp))
+
+
+        #lsh (line_spacing_height)
+
+        now = Text('line_spacing_height \n Hello world', font='DFLianLian SC2 W2', lsh=1.5)
+        now.shift(2* DOWN)
+        tmp = text.copy()
+        self.play(Transform(tmp, now), run_times=2)
+        self.wait()
+        self.play(Uncreate(now),Uncreate(tmp))
+
 
 
 class DecimalNumber(VMobject):
@@ -179,7 +242,6 @@ class DecimalNumber(VMobject):
 
     def increment_value(self, delta_t=1):
         self.set_value(self.get_value() + delta_t)
-
 
 class Integer(DecimalNumber):
     CONFIG = {
