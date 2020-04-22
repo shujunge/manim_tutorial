@@ -67,11 +67,9 @@ class Chapter1_Animation(MovingCameraScene):
 
         self.wait()
 
-class Chapter2_Animation(Chapter1_Animation):
+class Chapter2_Animation(MovingCameraScene):
 
     def construct(self):
-        super(Chapter2_Animation, self).construct()
-
         self.Chapter2_text_1 = Text('文字变换展示', font=' DFLianLian SC2 W2', color='GREEN').scale(2)
         
     def Chapter2_Animation(self):
@@ -80,9 +78,18 @@ class Chapter2_Animation(Chapter1_Animation):
         self.play(WiggleOutThenIn(self.Chapter2_text_1), run_time=1.8)
         self.wait(0.6)
 
-class change_camera_size(Chapter2_Animation):
+
+Total_Class = [Chapter1_Animation, Chapter2_Animation]
+
+class change_camera_size(*Total_Class):
 
     def construct(self):
         super(change_camera_size, self).construct()
+
+        for class_instance in Total_Class:
+            super(class_instance, self).construct()
+
+        # 展示第一章的动画
         self.Chapter1_Animation()
         self.Chapter2_Animation()
+
