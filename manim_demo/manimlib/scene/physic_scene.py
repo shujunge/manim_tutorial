@@ -40,13 +40,12 @@ class PhysicScene(Scene):
                         self.space.add(obj.shape)
             self.space.step(step)
 
-    def clear(self):
-        for i in self.physic_objs:
-            i.clear()
+    # def clear(self):
+    #     for i in self.physic_objs:
+    #         i.clear()
     
     def simulate(self, time=1.0):
         self.bake(time)
         self.play(*[Simulate(self, obj)\
             for obj in self.physic_objs],
             run_time = time)
-        self.clear()

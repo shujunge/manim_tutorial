@@ -12,6 +12,8 @@ from srcs.Code_line import TestDecimalNumberText
 from srcs.ThreeD_demo import basic_3d_shape, update_text_timeing
 from srcs.TwoD_demo import my_numberplane
 from srcs.move_camera import change_camera_size
+from srcs.levy import LevyScene
+
 
 
 
@@ -53,4 +55,4 @@ class PhysicExample(PhysicScene):
         self.simulate(20)
 
 if __name__ == '__main__':
-    run(your_module = [change_camera_size], l=True, gif =False)
+    run(your_module = [LevyScene], l=True, gif =False)

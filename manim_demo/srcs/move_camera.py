@@ -67,7 +67,7 @@ class Chapter1_Animation(MovingCameraScene):
 
         self.wait()
 
-class Chapter2_Animation(MovingCameraScene):
+class Chapter2_Animation(Scene):
 
     def construct(self):
         self.Chapter2_text_1 = Text('文字变换展示', font=' DFLianLian SC2 W2', color='GREEN').scale(2)
