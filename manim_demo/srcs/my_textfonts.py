@@ -4,11 +4,12 @@ from manimlib.imports import *
 >>> sudo mkfontscale && sudo mkfontdir && fc-cache -fv
 """
 class my_fonts_Demo(Scene):
+
     def construct(self):
         my_fonts_list = []
-        with open("fonts.txt",'r') as f:
+        with open("fonts.txt", 'r') as f:
             alllines = f.readlines()
-            for   lines in alllines:
+            for lines in alllines:
                 my_fonts_list.append(lines.split(": ")[1].split(",")[0].split("\n")[0].split(":")[0])
 
         my_fonts_list =list(set(my_fonts_list))
@@ -109,6 +110,28 @@ class Text_demo(Scene):
         self.wait()
         self.play(Uncreate(now),Uncreate(tmp))
 
+
+class Submojects_demo(Scene):
+    def construct(self):
+        square = Square()
+        square.submobjects.append(Circle().move_to(np.array([-1, -2, 0])))
+        square.submobjects.append(Circle().move_to(np.array([3, 0, 0])))
+        square.submobjects.append(Circle().move_to(np.array([5, 2, 0])))
+        square.submobjects.append(Circle().move_to(np.array([5, -3, 0])))
+        self.add(square)
+        self.play(square.arrange_in_grid)
+        self.wait(1)
+        text = Text("text")
+        self.play(ReplacementTransform(square, text), run_times= 2)
+        # self.play(Transform(square, text), run_times= 2)
+        # self.play(square.become, text, run_times= 2)
+        self.wait()
+        # print(self.remove(square))
+        square.remove(square.submobjects[-1])
+        self.play(text.shift, UP)
+        self.wait(1)
+        self.play(LaggedStartMap(FadeInFromDown, square))
+        self.wait(1)
 
 
 class DecimalNumber(VMobject):
