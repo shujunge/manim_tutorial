@@ -21,9 +21,9 @@ class VideoProgressBar(Scene):
         },
         'methods_dict': {
             '序言': '0025',
-            'shift+move_to': '0210',
-            'scale': '0402',
-            'rotate': '0504',
+            '介绍': '0210',
+            '第一节': '0402',
+            '第二节': '0504',
             'flip': '0712',
             'stretch': '0901',
             'to_corner': '1014',
@@ -120,6 +120,11 @@ class Introduction(TeacherStudentsScene):
 
         self.play(PiCreatureSays(self.teacher, self.tencher_says_2, bubble_kwargs={"width": 6, "height": 2, "direction": RIGHT}))
         self.wait()
+        self.play(RemovePiCreatureBubble(self.teacher), run_times=0.025)
+        self.wait()
+
+        self.clear_Introduction_Animation_all()
+        self.wait()
 
 
     def Introduction2_Animation(self):
@@ -161,6 +166,12 @@ class Introduction(TeacherStudentsScene):
         self.play(PiCreatureSays(self.teacher, self.tencher_says_2, bubble_kwargs={"width": 6, "height": 2, "direction": RIGHT}))
         # self.change_all_student_modes("happy")
         self.wait()
+
+    def clear_Introduction_Animation_all(self):
+        clear_list = VGroup()
+        for it in [ self.students, self.teacher]:
+            clear_list.add(it)
+        self.play(LaggedStartMap(Uncreate, clear_list, run_times=3))
 
 
 class Chapter1(MovingCameraScene):
@@ -288,7 +299,7 @@ class Chapter2(PhysicScene):
         self.play(LaggedStartMap(Uncreate, clear_list, run_times=3))
 
 
-Total_class = [ VideoProgressBar, Introduction, Chapter1, Chapter2,]
+Total_class = [ Chapter2, VideoProgressBar, Introduction, Chapter1,]
 
 class LogoDemo(*Total_class):
     def construct(self):
