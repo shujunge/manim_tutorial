@@ -120,10 +120,10 @@ class Camera(object):
         width = self.get_pixel_width()
         if self.background_image is not None:
             path = get_full_raster_image_path(self.background_image)
-            image = Image.open(path).convert(self.image_mode)
+            image = Image.open(path).convert(self.image_mode).resize((width,height))
             # TODO, how to gracefully handle backgrounds
             # with different sizes?
-            self.background = np.array(image)[:height, :width]
+            self.background = np.array(image)
             self.background = self.background.astype(self.pixel_array_dtype)
         else:
             background_rgba = color_to_int_rgba(
