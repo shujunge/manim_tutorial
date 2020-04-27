@@ -3,6 +3,68 @@ warnings.filterwarnings('ignore')
 from manimlib.imports import *
 from srcs.utils import run
 
+
+class VideoProgressBar(Scene):
+    CONFIG = {
+        "camera_config": {
+            "background_image": r"background.png",
+            # 视频的高宽与帧率
+            "pixel_height": DEFAULT_PIXEL_HEIGHT,
+            "pixel_width": DEFAULT_PIXEL_WIDTH,
+            "frame_rate": DEFAULT_FRAME_RATE,
+            # Note: frame height and width will be resized to match
+            # the pixel aspect ratio
+            # FRAME_HEIGHT = 8.0
+            # FRAME_WIDTH = FRAME_HEIGHT * DEFAULT_PIXEL_WIDTH / 						DEFAULT_PIXEL_HEIGHT
+            "frame_height": FRAME_HEIGHT,
+            "frame_width": FRAME_WIDTH,
+        },
+        'methods_dict': {
+            '序言': '0025',
+            'shift+move_to': '0210',
+            'scale': '0402',
+            'rotate': '0504',
+            'flip': '0712',
+            'stretch': '0901',
+            'to_corner': '1014',
+            'align_to': '1129',
+            'next_to': '1227',
+            'set_width+set_height': '1500',
+            ' ': '1659'},
+        'total_time': '1724',
+        'color_list': [BLUE, PINK, RED, ORANGE, GREEN],
+        'bar_width': 20,
+        'text_size': 0.15,
+    }
+
+    def construct(self):
+
+        func_time = lambda t: int(t[0:2]) * 60 + int(t[2:])
+        func_loc = lambda t: func_time(t) / func_time(self.total_time) * FRAME_WIDTH * RIGHT + FRAME_WIDTH * LEFT / 2
+
+        self.colors = color_gradient(self.color_list, len(self.methods_dict) + 1)
+        p_list = [FRAME_WIDTH * LEFT / 2]
+        for v in self.methods_dict.values():
+            p_list.append(func_loc(v))
+        p_list.append(func_loc(self.total_time))
+
+        self.lines = VGroup(
+            *[Line(p_list[i], p_list[i + 1] - 0.02 * RIGHT, color=self.colors[i], stroke_width=self.bar_width) for i in
+              range(len(self.methods_dict) + 1)])
+        self.lines.to_edge(DOWN * 0.22, buff=1)
+        self.texts = VGroup(
+            *[Text(t, color=BLACK, size=self.text_size, weight=BOLD) for t in self.methods_dict.keys()],
+            plot_depth=1)
+        for i in range(len(self.methods_dict)):
+            self.texts[i].move_to(self.lines[i + 1])
+
+    def demo_begin(self):
+
+        self.play(LaggedStartMap(FadeInFromDown,self.lines), LaggedStartMap(ShowCreation,self.texts))
+
+        self.wait()
+
+
 class Introduction(TeacherStudentsScene):
 
     CONFIG = {
@@ -23,9 +85,9 @@ class Introduction(TeacherStudentsScene):
         self.teacher.scale(self.teacher_scale_factor).to_edge(RIGHT)
         self.teacher.look(DOWN + LEFT)
         self.students = VGroup(*[Randolph(color=c) for c in self.student_colors])
-        self.students.arrange_in_grid(n_rows=4, n_cols=4, buff= LARGE_BUFF)
+        self.students.arrange_in_grid(n_rows=4, n_cols=4, buff= MED_LARGE_BUFF)
         self.students.scale(self.student_scale_factor)
-        self.students.shift(3* LEFT+ 0.7* DOWN)
+        self.students.shift(3* LEFT)
         self.teacher.look_at(self.students[len(self.teacher_color)].eyes)
         for student in self.students:
             student.look_at(self.teacher.eyes)
@@ -43,23 +105,22 @@ class Introduction(TeacherStudentsScene):
     def Introduction_Animation(self):
 
         # teacher
-        self.play(PiCreatureSays(self.teacher, self.tencher_says_1, self.teacher.change, "speaking", bubble_kwargs={"width": 6, "height": 2, "direction": RIGHT}))
+        self.play(PiCreatureSays(self.teacher, Text("同学们,大家报数!", color=BLUE), self.teacher.change, "speaking", bubble_kwargs={"width": 6, "height": 2, "direction": RIGHT}))
         self.play(self.teacher.change, "happy") # FadeOut(self.teacher.bubble)
         self.wait()
         self.play(RemovePiCreatureBubble(self.teacher))
         self.wait()
 
-        for index in range(1, 17):
+        for index in [1,15,7,4,9,12,6]:
             # student
             self.text = Text("%d" % (index), color= self.student_colors[index-1])
-            self.play(PiCreatureSays(self.students[index - 1], self.text, bubble_kwargs={"width": 3, "height": 1.2, "direction": LEFT}))
+            self.play(PiCreatureSays(self.students[index - 1], self.text, bubble_kwargs={"width": 3, "height": 1.2, "direction": LEFT}),run_times=0.2)
             # self.change_all_student_modes("pondering", look_at_arg=self.students[1], added_anims=[self.students[1].look_at, self.students2])
-            self.wait()
-            self.play(RemovePiCreatureBubble(self.students[index - 1]))
-            self.wait()
+            self.play(RemovePiCreatureBubble(self.students[index - 1]), run_times=0.025)
 
         self.play(PiCreatureSays(self.teacher, self.tencher_says_2, bubble_kwargs={"width": 6, "height": 2, "direction": RIGHT}))
         self.wait()
+
 
     def Introduction2_Animation(self):
 
@@ -117,7 +178,6 @@ class Chapter1(MovingCameraScene):
 
     def Chapter1_Animation(self):
         # 动画展示
-        self.clear()
         self.wait(1)
         self.play(Write(self.text_1), run_time=1.8)
         self.wait(0.6)
@@ -169,7 +229,14 @@ class Chapter1(MovingCameraScene):
         self.wait()
         self.play(Restore(self.camera.frame))
 
+        self.clear_chapter1_all()
         self.wait()
+
+    def clear_chapter1_all(self):
+        clear_list = VGroup()
+        for it in [self.text_1, self.text_2, self.circle_1, self.achilles_svg, self.tortoise_svg]:
+            clear_list.add(it)
+        self.play(LaggedStartMap(Uncreate, clear_list, run_times=3))
 
 
 class Chapter2(PhysicScene):
@@ -181,19 +248,15 @@ class Chapter2(PhysicScene):
         self.grd_shape = Line(
             LEFT * 10,
             RIGHT * 10
-        ).shift(2 * DOWN)
+        ).shift(2 * DOWN).set_color(BLACK)
 
         self.ground = PhysicMobject(grd_body, self.grd_seg, self.grd_shape)
 
 
     def Chapter2_Animation(self):
 
-        self.clear()
-        self.wait()
-
         self.set_gravity(9.8 * DOWN)
         self.add_static_obj(self.ground)
-
         for i in range(60):
 
             mass = 10
@@ -209,16 +272,23 @@ class Chapter2(PhysicScene):
             # shape.stretch_to_fit_height(0.5)
             # shape.stretch_to_fit_width(0.5)
             shape.set_fill(DARK_BLUE, opacity=1)
-
             mobj = PhysicMobject(body, box, shape)
             mobj.set_add_time(i * 0.5)
 
             self.add_physic_obj(mobj)
 
         self.simulate(20)
+        self.clear_chapter2_all()
+        self.wait()
+
+    def clear_chapter2_all(self):
+        clear_list = VGroup()
+        for it in [ self.ground,self.grd_shape, *self.physic_objs]:
+            clear_list.add(it)
+        self.play(LaggedStartMap(Uncreate, clear_list, run_times=3))
 
 
-Total_class = [Chapter2,Introduction, Chapter1]
+Total_class = [ VideoProgressBar, Introduction, Chapter1, Chapter2,]
 
 class LogoDemo(*Total_class):
     def construct(self):
@@ -226,10 +296,11 @@ class LogoDemo(*Total_class):
         for class_instance in Total_class:
             super(class_instance, self).construct()
 
+        self.demo_begin()
         self.Introduction_Animation()
         self.Chapter1_Animation()
         self.Chapter2_Animation()
 
 if __name__ == "__main__":
 
-    run([LogoDemo], l=False, h=True)
+    run([LogoDemo], l=True, h=False)

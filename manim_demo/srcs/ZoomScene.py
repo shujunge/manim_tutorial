@@ -116,17 +116,17 @@ class ZoomDemo(ManyFourierCirclesScene,ZoomedScene):
     CONFIG = {
         # ManyFourierOfTexSymbol
         "n_vectors": 51,
-        "center_point": [ 1.5*LEFT, ORIGIN, 1.5*RIGHT],
+        "center_point": [ 4.5*LEFT+0.5*UP, 4.5 *LEFT + 0.5*DOWN],
         "slow_factor": 0.1,
         "n_cycles": 1,
-        "tex": [index for index in "西安"],
+        "tex": [index for index in "重庆"],
         "start_drawn": False,
         "max_circle_stroke_width": 1,
         # ZoomedScene
         "zoom_factor": 0.3,
-        "zoomed_display_height": 1,
-        "zoomed_display_width": 6,
-        "zoomed_display_center": ORIGIN,
+        "zoomed_display_height": 2.5,
+        "zoomed_display_width": 1,
+        "zoomed_display_center": 2 * RIGHT,
         "image_frame_stroke_width": 20,
         "zoomed_camera_config": {
             "default_frame_stroke_width": 3,
@@ -154,22 +154,24 @@ class ZoomDemo(ManyFourierCirclesScene,ZoomedScene):
             path.set_fill(opacity=0)
             path.set_stroke(WHITE, 1)
             object_list.add(path)
+
+
         # Set camera
         zoomed_camera = self.zoomed_camera
         zoomed_display = self.zoomed_display
         frame = zoomed_camera.frame
         zoomed_display_frame = zoomed_display.display_frame
-        frame.move_to(object_list[-1])
+        frame.move_to(object_list.get_center())
         frame.set_color(PURPLE)
-        frame.set_width(object_list[-1].get_width() * 1.2)
-        frame.set_height(object_list[-1].get_height() * 1.2)
-        zoomed_display_frame.set_color(RED)
-        zoomed_display.shift(DOWN)
+        frame.set_width(object_list.get_width() * 1.2)
+        # frame.set_height(object_list[-1].get_height() * 1.2) # set up the height of zoom camera
+        zoomed_display_frame.set_color(BLUE)
+        # zoomed_display.shift(DOWN)
 
         # brackground zoomed_display
         zd_rect = BackgroundRectangle(
             zoomed_display,
-            fill_opacity=0,
+            fill_opacity=1,
             buff=MED_SMALL_BUFF,
         )
         self.add_foreground_mobject(zd_rect)
@@ -177,10 +179,8 @@ class ZoomDemo(ManyFourierCirclesScene,ZoomedScene):
         # animation of unfold camera
         unfold_camera = UpdateFromFunc(
             zd_rect,
-            lambda rect: rect.replace(zoomed_display)
+            lambda rect: ReplacementTransform(rect, zoomed_display) #rect.replace(zoomed_display)
         )
-
-
 
 
         coefs_list  = []
@@ -215,8 +215,9 @@ class ZoomDemo(ManyFourierCirclesScene,ZoomedScene):
         )
         # Resize the frame and zoomed camera
         self.play(
-            frame.scale, 1.2,
-            zoomed_display.scale, 2,
+            frame.scale, 1,
+            zoomed_display.scale, 4,
+            zoomed_display.set_height, FRAME_HEIGHT * 0.8
         )
         self.wait()
 
