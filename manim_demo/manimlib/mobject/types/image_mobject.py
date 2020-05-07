@@ -104,6 +104,11 @@ class ImageMobject(AbstractImageMobject):
             mobject1.pixel_array, mobject2.pixel_array, alpha
         ).astype(self.pixel_array_dtype)
 
+    def set_array(self, np_array):
+        self.pixel_array = np_array
+        self.change_to_rgba_array()
+        return self
+
 # TODO, add the ability to have the dimensions/orientation of this
 # mobject more strongly tied to the frame of the camera it contains,
 # in the case where that's a MovingCamera
