@@ -240,4 +240,4 @@ class Testing4(Scene):
 
 
 if __name__=="__main__":
-    run([DownProgressBar])
+    run([test])
